@@ -23,7 +23,7 @@ public class EarthquakeListAdapter extends ArrayAdapter<Earthquake> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View composedView = convertView;
 
-        if(composedView == null) {
+        if (composedView == null) {
             composedView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
 
@@ -34,8 +34,22 @@ public class EarthquakeListAdapter extends ArrayAdapter<Earthquake> {
         String dateToDisplay = (new SimpleDateFormat("dd MMM yyyy")).format(date);
         String timeToDisplay = (new SimpleDateFormat("H.m")).format(date);
 
+        // Separate string into location and offset
+        String location = "";
+        String offset = "";
+
+        // Check if it includes of
+        if (currentItem.getLocation().indexOf("of") > 0) {
+            offset = currentItem.getLocation().substring(0, currentItem.getLocation().indexOf("of") + 2);
+            location = currentItem.getLocation().substring(currentItem.getLocation().indexOf("of") + 3);
+        } else {
+            offset = "Near the";
+            location = currentItem.getLocation();
+        }
+
         ((TextView) composedView.findViewById(R.id.magnitude)).setText(currentItem.getMagnitude() + "");
-        ((TextView) composedView.findViewById(R.id.location)).setText(currentItem.getLocation());
+        ((TextView) composedView.findViewById(R.id.location)).setText(location);
+        ((TextView) composedView.findViewById(R.id.offset)).setText(offset);
         ((TextView) composedView.findViewById(R.id.date)).setText(dateToDisplay);
         ((TextView) composedView.findViewById(R.id.time)).setText(timeToDisplay);
 
