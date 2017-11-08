@@ -31,13 +31,13 @@ public class EarthquakeListAdapter extends ArrayAdapter<Earthquake> {
 
         // Parse to a readable format
         Date date = new Date(currentItem.getTime());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
-        String dateToDisplay = dateFormat.format(date);
-
+        String dateToDisplay = (new SimpleDateFormat("dd MMM yyyy")).format(date);
+        String timeToDisplay = (new SimpleDateFormat("H.m")).format(date);
 
         ((TextView) composedView.findViewById(R.id.magnitude)).setText(currentItem.getMagnitude() + "");
         ((TextView) composedView.findViewById(R.id.location)).setText(currentItem.getLocation());
-        ((TextView) composedView.findViewById(R.id.time)).setText(dateToDisplay);
+        ((TextView) composedView.findViewById(R.id.date)).setText(dateToDisplay);
+        ((TextView) composedView.findViewById(R.id.time)).setText(timeToDisplay);
 
         return composedView;
     }
