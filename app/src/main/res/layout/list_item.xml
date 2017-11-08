@@ -7,8 +7,11 @@
 
     <TextView
         android:id="@+id/magnitude"
+        android:textColor="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="@drawable/magnitude_circle"
+        android:gravity="center"
         android:textStyle="bold" />
 
     <LinearLayout
