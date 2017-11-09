@@ -1,6 +1,8 @@
 package com.example.android.quakereport;
 
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,7 +32,7 @@ public class EarthquakeListAdapter extends ArrayAdapter<Earthquake> {
             composedView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
 
-        Earthquake currentItem = getItem(position);
+        final Earthquake currentItem = getItem(position);
 
         // Parse to a readable format
         Date date = new Date(currentItem.getTime());
@@ -71,6 +73,23 @@ public class EarthquakeListAdapter extends ArrayAdapter<Earthquake> {
         ((TextView) composedView.findViewById(R.id.offset)).setText(offset);
         ((TextView) composedView.findViewById(R.id.date)).setText(dateToDisplay);
         ((TextView) composedView.findViewById(R.id.time)).setText(timeToDisplay);
+
+        // Link to the corresponding website
+        composedView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_WEB_SEARCH);
+                intent.putExtra(SearchManager.QUERY, currentItem.getUrl());
+
+                // If it can be resolved an a programme on the phone can open it, open
+                if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+                    getContext().startActivity(intent);
+                }
+            }
+
+        });
 
         return composedView;
     }

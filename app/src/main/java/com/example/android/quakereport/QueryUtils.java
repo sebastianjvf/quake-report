@@ -56,10 +56,11 @@ public final class QueryUtils {
                 double magnitude = earthquake.getDouble("mag");
                 String location = earthquake.getString("place");
                 long time = earthquake.getLong("time");
+                String url = earthquake.getString("url");
 
                 Log.v("EARTHQUAKE", "Values" + magnitude + ", " + location + ", " + time);
 
-                Earthquake composeEarthquake = new Earthquake(location, time, magnitude);
+                Earthquake composeEarthquake = new Earthquake(location, time, magnitude, url);
                 earthquakes.add(composeEarthquake);
             }
 
