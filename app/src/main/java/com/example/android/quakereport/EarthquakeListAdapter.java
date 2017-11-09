@@ -1,9 +1,9 @@
 package com.example.android.quakereport;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -79,9 +79,8 @@ public class EarthquakeListAdapter extends ArrayAdapter<Earthquake> {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_WEB_SEARCH);
-                intent.putExtra(SearchManager.QUERY, currentItem.getUrl());
+                // Parse it to a URI
+                Intent intent = new Intent(Intent.ACTION_VIEW, (Uri.parse(currentItem.getUrl())));
 
                 // If it can be resolved an a programme on the phone can open it, open
                 if (intent.resolveActivity(getContext().getPackageManager()) != null) {
