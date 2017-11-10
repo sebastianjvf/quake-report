@@ -36,18 +36,7 @@ public class EarthquakeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        // Create a fake list of earthquake locations.
-        ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes();
-
-        // Find a reference to the {@link ListView} in the layout
-        ListView earthquakeListView = (ListView) findViewById(R.id.list);
-
-        // Create a new {@link ArrayAdapter} of earthquakes
-        EarthquakeListAdapter adapter = new EarthquakeListAdapter(this, earthquakes);
-
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(adapter);
+        (new EarthquakeAsyncTask()).execute(USGS_REQUEST_URL);
     }
 
     /**
@@ -58,13 +47,21 @@ public class EarthquakeActivity extends AppCompatActivity {
 
         @Override
         protected List<Earthquake> doInBackground(String... strings) {
-            // Fetch the data
-            return null;
+            ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes(strings[0]);
+            return earthquakes;
         }
 
         @Override
         protected void onPostExecute(List<Earthquake> earthquakes) {
-            // Update UI
+            // Find a reference to the {@link ListView} in the layout
+            ListView earthquakeListView = (ListView) findViewById(R.id.list);
+
+            // Create a new {@link ArrayAdapter} of earthquakes
+            EarthquakeListAdapter adapter = new EarthquakeListAdapter(EarthquakeActivity.this, earthquakes);
+
+            // Set the adapter on the {@link ListView}
+            // so the list can be populated in the user interface
+            earthquakeListView.setAdapter(adapter);
         }
     }
 }

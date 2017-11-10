@@ -47,7 +47,7 @@ public final class QueryUtils {
      * Return a list of {@link Earthquake} objects that has been built up from
      * parsing a JSON response.
      */
-    public static ArrayList<Earthquake> extractEarthquakes() {
+    public static ArrayList<Earthquake> extractEarthquakes(String url) {
 
         // Create an empty ArrayList that we can start adding earthquakes to
         ArrayList<Earthquake> earthquakes = new ArrayList<>();
@@ -58,7 +58,8 @@ public final class QueryUtils {
         try {
 
             // build up a list of Earthquake objects with the corresponding data.
-            JSONObject parsedJSON = new JSONObject(SAMPLE_JSON_RESPONSE);
+            String JSONString = makeHttpRequest(url);
+            JSONObject parsedJSON = new JSONObject(); // pass SAMPLE_JSON_RESPONSE if Internet is unavailable
             JSONArray featuresArray = parsedJSON.optJSONArray("features");
 
             for (int i = 0; i < featuresArray.length(); i++) {
@@ -66,11 +67,11 @@ public final class QueryUtils {
                 double magnitude = earthquake.getDouble("mag");
                 String location = earthquake.getString("place");
                 long time = earthquake.getLong("time");
-                String url = earthquake.getString("url");
+                String urlWebsite = earthquake.getString("url");
 
                 Log.v("EARTHQUAKE", "Values" + magnitude + ", " + location + ", " + time);
 
-                Earthquake composeEarthquake = new Earthquake(location, time, magnitude, url);
+                Earthquake composeEarthquake = new Earthquake(location, time, magnitude, urlWebsite);
                 earthquakes.add(composeEarthquake);
             }
 
@@ -136,7 +137,7 @@ public final class QueryUtils {
             }
         }
 
-        return null;
+        return jsonResponse;
     }
 
     /**
