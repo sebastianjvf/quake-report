@@ -58,7 +58,13 @@ public class EarthquakeActivity extends AppCompatActivity {
 
         @Override
         protected List<Earthquake> doInBackground(String... strings) {
+            // Fetch the data
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Earthquake> earthquakes) {
+            // Update UI
         }
     }
 }
