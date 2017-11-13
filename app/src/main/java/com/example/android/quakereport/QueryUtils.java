@@ -59,8 +59,9 @@ public final class QueryUtils {
 
             // build up a list of Earthquake objects with the corresponding data.
             String JSONString = makeHttpRequest(url);
-            JSONObject parsedJSON = new JSONObject(); // pass SAMPLE_JSON_RESPONSE if Internet is unavailable
+            JSONObject parsedJSON = new JSONObject(JSONString); // pass SAMPLE_JSON_RESPONSE if Internet is unavailable
             JSONArray featuresArray = parsedJSON.optJSONArray("features");
+            Log.v("Bla", parsedJSON.toString());
 
             for (int i = 0; i < featuresArray.length(); i++) {
                 JSONObject earthquake = ((JSONObject) featuresArray.get(i)).optJSONObject("properties");
