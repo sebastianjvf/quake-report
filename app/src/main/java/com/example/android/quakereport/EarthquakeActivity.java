@@ -22,6 +22,7 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,13 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
+        // Set empty screen
+        ListView earthquakeListView = (ListView) findViewById(R.id.list);
+        TextView emptyView = ((TextView) findViewById(R.id.empty));
+        earthquakeListView.setEmptyView(emptyView);
+
+        adapter = new EarthquakeListAdapter(EarthquakeActivity.this, new ArrayList<Earthquake>());
+
         getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null, this).forceLoad();
     }
 
@@ -69,12 +77,20 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
-        // Create a new {@link ArrayAdapter} of earthquakes
-        adapter = new EarthquakeListAdapter(EarthquakeActivity.this, earthquakes);
+
+        // Create (and reset) a new {@link ArrayAdapter} of earthquakes
+        adapter.clear();
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
         earthquakeListView.setAdapter(adapter);
+        TextView emptyView = ((TextView) findViewById(R.id.empty));
+        emptyView.setText("No earthquakes found.");
+
+        // Check if no earthquakes were loaded
+        if (earthquakes != null && !earthquakes.isEmpty()) {
+            adapter.addAll(earthquakes);
+        }
     }
 
     @Override
