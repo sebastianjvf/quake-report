@@ -19,6 +19,8 @@ import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -57,17 +59,29 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        // Set empty screen
-        ListView earthquakeListView = (ListView) findViewById(R.id.list);
-        TextView emptyView = ((TextView) findViewById(R.id.empty));
-        earthquakeListView.setEmptyView(emptyView);
+        // Check for internet connection
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-        progressBarIndicator = (ProgressBar) findViewById(R.id.loading);
-        progressBarIndicator.setVisibility(View.VISIBLE);
+        if(!isConnected) {
+            TextView noConnection = ((TextView) findViewById(R.id.no_connection));
+            noConnection.setText(R.string.no_connection);
+            noConnection.setVisibility(View.VISIBLE);
+            progressBarIndicator.setVisibility(View.GONE);
+        } else {
+            // Set empty screen
+            ListView earthquakeListView = (ListView) findViewById(R.id.list);
+            TextView emptyView = ((TextView) findViewById(R.id.empty));
+            earthquakeListView.setEmptyView(emptyView);
 
-        adapter = new EarthquakeListAdapter(EarthquakeActivity.this, new ArrayList<Earthquake>());
+            progressBarIndicator = (ProgressBar) findViewById(R.id.loading);
+            progressBarIndicator.setVisibility(View.VISIBLE);
 
-        getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null, this).forceLoad();
+            adapter = new EarthquakeListAdapter(EarthquakeActivity.this, new ArrayList<Earthquake>());
+
+            getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null, this).forceLoad();
+        }
     }
 
     /**
@@ -97,7 +111,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         // so the list can be populated in the user interface
         earthquakeListView.setAdapter(adapter);
         TextView emptyView = ((TextView) findViewById(R.id.empty));
-        emptyView.setText("No earthquakes found.");
+        emptyView.setText(R.string.no_earthquakes);
 
         // Check if no earthquakes were loaded
         if (earthquakes != null && !earthquakes.isEmpty()) {

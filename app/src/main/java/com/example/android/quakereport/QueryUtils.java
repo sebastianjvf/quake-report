@@ -81,6 +81,7 @@ public final class QueryUtils {
             // catch the exception here, so the app doesn't crash. Print a log message
             // with the message from the exception.
             Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
+            return null;
         }
 
         // Return the list of earthquakes
