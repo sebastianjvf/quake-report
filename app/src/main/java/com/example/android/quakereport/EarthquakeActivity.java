@@ -21,7 +21,9 @@ import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -45,6 +47,11 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
      */
     EarthquakeListAdapter adapter;
 
+    /**
+     * Progress bar indicator, should show when loading.
+     */
+    ProgressBar progressBarIndicator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +62,9 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         TextView emptyView = ((TextView) findViewById(R.id.empty));
         earthquakeListView.setEmptyView(emptyView);
 
+        progressBarIndicator = (ProgressBar) findViewById(R.id.loading);
+        progressBarIndicator.setVisibility(View.VISIBLE);
+
         adapter = new EarthquakeListAdapter(EarthquakeActivity.this, new ArrayList<Earthquake>());
 
         getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null, this).forceLoad();
@@ -62,6 +72,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     /**
      * Returns a new AsyncLoader, passing in the url
+     *
      * @param i
      * @param bundle
      * @return
@@ -77,6 +88,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
+        progressBarIndicator.setVisibility(View.GONE);
 
         // Create (and reset) a new {@link ArrayAdapter} of earthquakes
         adapter.clear();
