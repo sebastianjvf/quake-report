@@ -64,7 +64,10 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-        if(!isConnected) {
+        // Find the progress bar indicator
+        progressBarIndicator = (ProgressBar) findViewById(R.id.loading);
+
+        if (!isConnected) {
             TextView noConnection = ((TextView) findViewById(R.id.no_connection));
             noConnection.setText(R.string.no_connection);
             noConnection.setVisibility(View.VISIBLE);
@@ -75,9 +78,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
             TextView emptyView = ((TextView) findViewById(R.id.empty));
             earthquakeListView.setEmptyView(emptyView);
 
-            progressBarIndicator = (ProgressBar) findViewById(R.id.loading);
             progressBarIndicator.setVisibility(View.VISIBLE);
-
             adapter = new EarthquakeListAdapter(EarthquakeActivity.this, new ArrayList<Earthquake>());
 
             getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null, this).forceLoad();
