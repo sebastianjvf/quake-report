@@ -7,6 +7,9 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+
+import static com.example.android.quakereport.EarthquakeActivity.LOG_TAG;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -45,6 +48,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
+            Log.e(LOG_TAG, "Preferences updated");
             // The code in this method takes care of updating the displayed preference summary after it has been changed
             String stringValue = value.toString();
 
@@ -67,7 +71,7 @@ public class SettingsActivity extends AppCompatActivity {
                 preference.setSummary(stringValue);
             }
 
-            return false;
+            return true;
         }
     }
 }
